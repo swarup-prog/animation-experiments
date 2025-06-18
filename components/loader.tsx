@@ -35,6 +35,10 @@ export function Loader() {
           delay: 0.6,
           stagger: 0.5,
         })
+        .to(["#container-2", "#load-2", "#container-4", "#load-4"], {
+          width: 60,
+          delay: 0.1,
+        })
         .to(
           [
             "#container-1",
