@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+
+
+@utility flex-container {
+  @apply  flex justify-center items-center
+}
+
+@utility screen-container {
+  @apply h-screen flex-container
+}
+
+@utility circle {
+  @apply flex-container text-indigo-50 rounded-full
+}
