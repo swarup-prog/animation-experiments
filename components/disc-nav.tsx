@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { getLetterPosition } from "@/utils/getLetterPosition";
 
 interface INavCircleProps {
   index: number;
@@ -12,15 +13,9 @@ interface INavCircleProps {
 }
 
 function NavCircle({ index, title, totalItems }: INavCircleProps) {
-  const letters = title.toUpperCase().split("").reverse();
-  // const letters = title.toUpperCase().split("");
-
+  const letters = title.toUpperCase().split("");
   const diameter = 100 + 50 * index;
-  const angle = (letters.length * 15) / (letters.length / 4) / letters.length;
-
-  const midLetterIndex = (letters.length / 2).toString();
-
-  // const rotations = letters.map();
+  const letterPosition = getLetterPosition(letters, index);
 
   return (
     <div
@@ -32,26 +27,19 @@ function NavCircle({ index, title, totalItems }: INavCircleProps) {
       }}
       className={`bg-indigo-${index * 100} circle flex items-end relative`}
     >
-      {letters.map((letter, index) => {
-        let rotationAngle = index * angle;
-
-        // if (index > +midLetterIndex) {
-        //   rotationAngle = -rotationAngle;
-        // }
-        return (
-          <span
-            key={index}
-            className="flex items-end absolute text-indigo-950 text-xs"
-            style={{
-              height: `${diameter / 2}px`,
-              transform: `rotate(${rotationAngle}deg`,
-              transformOrigin: "6px 0px 0",
-            }}
-          >
-            {letter}
-          </span>
-        );
-      })}
+      {letterPosition.map((letter, idx) => (
+        <span
+          key={idx}
+          className="flex items-end absolute text-indigo-950 text-xs"
+          style={{
+            height: `${diameter / 2}px`,
+            transform: `rotate(${letter.rotation}deg)`,
+            transformOrigin: "6px 0px 0",
+          }}
+        >
+          {letter.content}
+        </span>
+      ))}
     </div>
   );
 }
@@ -59,20 +47,17 @@ function NavCircle({ index, title, totalItems }: INavCircleProps) {
 export function DiscNav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const navItems = ["home", "my self", "experience", "my work", "reviews"];
-
   const navSize = navItems.length * 50 + 100;
 
-  const letters = "HOME".split("").reverse();
-  const angle = 90 / letters.length;
-
-  useGSAP(() => {}, []);
+  useGSAP(() => {
+    // Animation placeholder
+  }, []);
 
   return (
     <div className="screen-container bg-indigo-950">
-      {/* <div className="h-96 w-96 bg-indigo-950 flex relative overflow-hidden"> */}
       <div
         style={{ width: `${navSize}px`, height: `${navSize}px` }}
-        className=" absolute flex justify-center items-center"
+        className="absolute flex justify-center items-center"
       >
         <div
           style={{ zIndex: (navItems.length + 1) * 10 }}
@@ -85,48 +70,25 @@ export function DiscNav() {
             onClick={() => setIsNavOpen(!isNavOpen)}
           />
         </div>
-        {isNavOpen && (
-          <>
-            {navItems.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  width: `${100 + 50 * index}px`,
-                  height: `${100 + 50 * index}px`,
-                }}
-                className="absolute"
-              >
-                <NavCircle
-                  title={item}
-                  index={index}
-                  totalItems={navItems.length}
-                />
-              </div>
-            ))}
-            {/* <div className=" absolute w-[200px] h-[200px] bg-indigo-400 circle ">
-              <div className="w-[150px] h-[150px] bg-indigo-200 circle z-10">
-                <div className="w-[100px] h-[100px] bg-indigo-100 circle z-20 flex items-end relative">
-                  {letters.map((letter, index) => {
-                    return (
-                      <span
-                        key={index}
-                        className="h-[50px] flex items-end absolute text-indigo-950 text-xs"
-                        style={{
-                          transform: `rotate(${index * angle}deg`,
-                          transformOrigin: "6px 0px 0",
-                        }}
-                      >
-                        {letter}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div> */}
-          </>
-        )}
+
+        {isNavOpen &&
+          navItems.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                width: `${100 + 50 * index}px`,
+                height: `${100 + 50 * index}px`,
+              }}
+              className="absolute"
+            >
+              <NavCircle
+                title={item}
+                index={index}
+                totalItems={navItems.length}
+              />
+            </div>
+          ))}
       </div>
-      {/* </div> */}
     </div>
   );
 }
