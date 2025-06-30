@@ -5,16 +5,42 @@ import { useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { getLetterPosition } from "@/utils/getLetterPosition";
+import { NAV_CIRCLE_GROWTH } from "@/constants";
 
 interface INavCircleProps {
   index: number;
   title: string;
   totalItems: number;
+  rotate: number;
 }
 
-function NavCircle({ index, title, totalItems }: INavCircleProps) {
+function NavCircle({ index, title, totalItems, rotate }: INavCircleProps) {
+  // const bgColors = [
+  //   "bg-indigo-50",
+  //   "bg-indigo-100",
+  //   "bg-indigo-100",
+  //   "bg-indigo-200",
+  //   "bg-indigo-200",
+  //   "bg-indigo-400",
+  //   "bg-indigo-500",
+  //   "bg-indigo-700",
+  // ];
+  const bgColors = [
+    "#FFFFFF",
+    "#EDE6F3",
+    "#DBCCE6",
+    "#C9B3DA",
+    "#B799CD",
+    "#A580C1",
+    "#9366B4",
+    "#814DA8",
+    "#6F339B",
+    "#5D1A8F",
+    "#B0082",
+  ];
+
   const letters = title.toUpperCase().split("");
-  const diameter = 100 + 50 * index;
+  const diameter = 100 + NAV_CIRCLE_GROWTH * index;
   const letterPosition = getLetterPosition(letters, index);
 
   return (
@@ -24,17 +50,20 @@ function NavCircle({ index, title, totalItems }: INavCircleProps) {
         height: `${diameter}px`,
         zIndex: (totalItems - index) * 10,
         boxShadow: "0 0 15px -10px #000",
+        rotate: `${rotate}deg`,
+        backgroundColor: `${bgColors[index]}`,
       }}
-      className={`bg-indigo-${index * 100} circle flex items-end relative`}
+      className={`circle flex items-end relative cursor-pointer text-indigo-950 hover:text-sky-500`}
     >
       {letterPosition.map((letter, idx) => (
         <span
           key={idx}
-          className="flex items-end absolute text-indigo-950 text-xs"
+          className="flex items-end absolute  hover:text-sky-300"
           style={{
             height: `${diameter / 2}px`,
             transform: `rotate(${letter.rotation}deg)`,
             transformOrigin: "6px 0px 0",
+            color: "inherit",
           }}
         >
           {letter.content}
@@ -46,24 +75,34 @@ function NavCircle({ index, title, totalItems }: INavCircleProps) {
 
 export function DiscNav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const navItems = ["home", "my self", "experience", "my work", "reviews"];
-  const navSize = navItems.length * 50 + 100;
+  const navItems = [
+    "home",
+    "my self",
+    "experience",
+    "my work",
+    "reviews",
+    "certification",
+    "my youtube",
+    "contact",
+  ];
+  const navSize = navItems.length * NAV_CIRCLE_GROWTH + 100;
 
   useGSAP(() => {
     // Animation placeholder
   }, []);
 
   return (
-    <div className="screen-container bg-indigo-950">
+    <div className="relative">
       <div
-        style={{ width: `${navSize}px`, height: `${navSize}px` }}
-        className="absolute flex justify-center items-center"
+        // style={{ width: `${navSize}px`, height: `${navSize}px` }}
+        className="flex justify-center items-center"
       >
         <div
           style={{ zIndex: (navItems.length + 1) * 10 }}
-          className="w-[100] h-[100] flex justify-center items-center top-[15%] right-[15%]"
+          className="w-[50px] h-[50px] flex justify-center items-center top-[15%] right-[15%]"
         >
           <Menu
+            size={25}
             className={`${
               isNavOpen ? "text-indigo-950" : "text-indigo-50"
             } z-30 menu-icon cursor-pointer`}
@@ -76,8 +115,8 @@ export function DiscNav() {
             <div
               key={index}
               style={{
-                width: `${100 + 50 * index}px`,
-                height: `${100 + 50 * index}px`,
+                width: `${100 + NAV_CIRCLE_GROWTH * index}px`,
+                height: `${100 + NAV_CIRCLE_GROWTH * index}px`,
               }}
               className="absolute"
             >
@@ -85,6 +124,7 @@ export function DiscNav() {
                 title={item}
                 index={index}
                 totalItems={navItems.length}
+                rotate={45}
               />
             </div>
           ))}

@@ -1,3 +1,5 @@
+import { NAV_CIRCLE_GROWTH } from "@/constants";
+
 interface ILetterPosElement {
   content: string;
   rotation: number;
@@ -9,8 +11,11 @@ export function getLetterPosition(
 ): ILetterPosElement[] {
   const charLen = charArr.length;
   const midIndex = Math.floor(charLen / 2);
-  const baseArc = 60;
-  const scale = arrIndex !== 1 ? arrIndex * 0.5 : 1;
+  const baseArc = 90;
+  let scale = arrIndex * (NAV_CIRCLE_GROWTH / 100);
+  if (arrIndex === 1 || arrIndex === 0) {
+    scale = 1;
+  }
   const angle = baseArc / scale / charLen;
 
   let letterPos: ILetterPosElement[] = [];
