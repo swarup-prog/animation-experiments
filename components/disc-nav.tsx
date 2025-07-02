@@ -15,16 +15,6 @@ interface INavCircleProps {
 }
 
 function NavCircle({ index, title, totalItems, rotate }: INavCircleProps) {
-  // const bgColors = [
-  //   "bg-indigo-50",
-  //   "bg-indigo-100",
-  //   "bg-indigo-100",
-  //   "bg-indigo-200",
-  //   "bg-indigo-200",
-  //   "bg-indigo-400",
-  //   "bg-indigo-500",
-  //   "bg-indigo-700",
-  // ];
   const bgColors = [
     "#FFFFFF",
     "#EDE6F3",
@@ -85,18 +75,17 @@ export function DiscNav() {
     "my youtube",
     "contact",
   ];
-  const navSize = navItems.length * NAV_CIRCLE_GROWTH + 100;
 
   useGSAP(() => {
-    // Animation placeholder
+    const navTimeline = gsap.timeline();
+    navTimeline.to(".menu-icon", {
+      rotate: 360,
+    });
   }, []);
 
   return (
     <div className="relative">
-      <div
-        // style={{ width: `${navSize}px`, height: `${navSize}px` }}
-        className="flex justify-center items-center"
-      >
+      <div className="flex justify-center items-center">
         <div
           style={{ zIndex: (navItems.length + 1) * 10 }}
           className="w-[50px] h-[50px] flex justify-center items-center top-[15%] right-[15%]"
@@ -106,7 +95,10 @@ export function DiscNav() {
             className={`${
               isNavOpen ? "text-indigo-950" : "text-indigo-50"
             } z-30 menu-icon cursor-pointer`}
-            onClick={() => setIsNavOpen(!isNavOpen)}
+            onClick={() => {
+              setIsNavOpen(!isNavOpen);
+              // navTimeline.play();
+            }}
           />
         </div>
 

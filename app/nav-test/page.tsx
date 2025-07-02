@@ -7,6 +7,10 @@ export default function NavTest() {
         <div className="text-xl font-bold">Logo</div>
         <DiscNav />
       </nav>
+
+      <div className="screen-container">
+        <DiscNav />
+      </div>
     </main>
   );
 }
