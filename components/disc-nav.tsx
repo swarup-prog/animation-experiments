@@ -76,12 +76,22 @@ export function DiscNav() {
     "contact",
   ];
 
-  useGSAP(() => {
-    const navTimeline = gsap.timeline();
-    navTimeline.to(".menu-icon", {
-      rotate: 360,
-    });
-  }, []);
+  const navTimeline = gsap.timeline();
+  const handleNavClick = () => {
+    if (!isNavOpen) {
+      setIsNavOpen(true);
+      navTimeline.to(".menu-icon", {
+        rotate: 360,
+      });
+    } else {
+      setIsNavOpen(false);
+      navTimeline.to(".menu-icon", {
+        rotate: 0,
+      });
+    }
+  };
+
+  useGSAP(() => {}, []);
 
   return (
     <div className="relative">
@@ -95,10 +105,7 @@ export function DiscNav() {
             className={`${
               isNavOpen ? "text-indigo-950" : "text-indigo-50"
             } z-30 menu-icon cursor-pointer`}
-            onClick={() => {
-              setIsNavOpen(!isNavOpen);
-              // navTimeline.play();
-            }}
+            onClick={handleNavClick}
           />
         </div>
 
